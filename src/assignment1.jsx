@@ -19,7 +19,7 @@ export const Assignment1 = () => {
     const [name, setName] = useState("");
     const [age, setAge] = useState("");
     const [gender, setGender] = useState("");
-    const [nationality, setNationality] = useState("India");
+    const [nationality, setNationality] = useState("");
     const [isMarried, setIsMarried] = useState("");
     const [hasChildren, setHasChildren] = useState("");
     const [hasSiblings, setHasSiblings] = useState("");
@@ -42,7 +42,7 @@ export const Assignment1 = () => {
         alert(JSON.stringify(formValue));
     };
 
-    const handleGenderChange = (event) => {
+    function handleGenderChange(event) {
         setGender(event.target.value);
     };
 
@@ -53,12 +53,13 @@ export const Assignment1 = () => {
             Gender : <br/>
           <input type="radio" name="gender" value="male"  onChange={e => handleGenderChange(e)}/>
           <label >Male</label> <br/>
-          <input type="radio" name="gender" value="female" onChange={handleGenderChange}/>
+          <input type="radio" name="gender" value="female" onChange={e => handleGenderChange(e)}/>
           <label > Female</label> <br/>
         </div>
         <div>
             Nationality :
             <select value = {nationality} onChange = {e => setNationality(e.target.value) }>
+                <option value=""></option>
                 <option value="India">India</option>
                 <option value="Aus">Aus</option>
                 <option value="UK">UK</option>
