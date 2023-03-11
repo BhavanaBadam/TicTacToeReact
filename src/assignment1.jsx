@@ -1,5 +1,9 @@
 import { useState } from "react";
 import Select from "react-select";
+import DatePicker from "react-datepicker";
+import InputRange from "react-input-range";
+import "react-input-range/lib/css/index.css";
+import "react-datepicker/dist/react-datepicker.css";
 
 
 /*
@@ -26,7 +30,8 @@ export const Assignment1 = () => {
     const [hasChildren, setHasChildren] = useState("");
     const [hasSiblings, setHasSiblings] = useState("");
     const [selectedOptions, setSelectedOptions] = useState([]);
-
+    const [dob, setDob] = useState("");
+    const [fontSize, setFontsize] = useState(16);
 
     const submitFinalForm = () => {
         if (isNaN(age)) {
@@ -48,6 +53,7 @@ export const Assignment1 = () => {
             "hasChildren" : hasChildren === true ? true : false,
             "hasSiblings" : hasSiblings === true ? true : false,
             "languagesKnown" : languagesKnown(),
+            Date_of_Birth : dob,
         };
         console.log("form submit", formValue);
         alert(JSON.stringify(formValue));
@@ -57,6 +63,14 @@ export const Assignment1 = () => {
         setGender(event.target.value);
     };
 
+    function handleDobChange(date){
+        setDob(date);
+    };
+
+    function handleFontSizeChange(value){
+        setFontsize(value);
+    };
+
     const options = [
         { value: "Spanish", label: "Spanish" },
         { value: "French", label: "French" },
@@ -64,7 +78,10 @@ export const Assignment1 = () => {
         { value: "Hindi", label: "Hindi" }
       ];
 
+     const formStyle = {fontSize : fontSize + "px" }; 
     return <div>
+    <form style={formStyle}>
+    
         <div> Name: <input value={name} onChange={e => setName(e.target.value)} /></div>
         <div> Age:  <input value={age} onChange = {e => setAge(e.target.value)} /></div>
         <div>
@@ -88,6 +105,12 @@ export const Assignment1 = () => {
         <div> hasChildren : <input type="checkbox" checked={hasChildren} onChange={e => setHasChildren(e.target.checked)} /></div>
         <div> hasSiblings : <input type="checkbox" checked={hasSiblings} onChange={e => setHasSiblings(e.target.checked)} /></div>
         <div> Languages : <Select isMulti options={options} value={selectedOptions} onChange={e => setSelectedOptions(e)}/></div>
+        <div> Date_of_Birth : <DatePicker selected={dob} onChange={handleDobChange} peekNextMonth showMonthDropdown showYearDropdown
+                                dropdownMode="select" placeholderText="Select date of birth"/>
+        </div>
+        <div>  Font Size : <InputRange minValue={10} maxValue={40} value={fontSize} onChange={handleFontSizeChange}/> </div>
+    </form>    
+
         <button onClick={submitFinalForm}>Submit!</button>
     </div>;
 }
