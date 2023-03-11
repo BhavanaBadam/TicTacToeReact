@@ -1,4 +1,6 @@
 import { useState } from "react";
+import Select from "react-select";
+
 
 /*
   Assignment 1: basic form elements
@@ -23,13 +25,21 @@ export const Assignment1 = () => {
     const [isMarried, setIsMarried] = useState("");
     const [hasChildren, setHasChildren] = useState("");
     const [hasSiblings, setHasSiblings] = useState("");
+    const [selectedOptions, setSelectedOptions] = useState([]);
+
 
     const submitFinalForm = () => {
         if (isNaN(age)) {
             alert("Age is Invalid");
             return;
         }
-        const formValue = {
+        function languagesKnown() {
+            var languages = "";
+            selectedOptions.forEach(l =>
+                languages = languages === "" ? l.value : languages + ',' + l.value);
+            return languages;
+        }
+         const formValue = {
             name,
             age,
             gender,
@@ -37,6 +47,7 @@ export const Assignment1 = () => {
             "isMarried" : isMarried === true ? true : false,
             "hasChildren" : hasChildren === true ? true : false,
             "hasSiblings" : hasSiblings === true ? true : false,
+            "languagesKnown" : languagesKnown(),
         };
         console.log("form submit", formValue);
         alert(JSON.stringify(formValue));
@@ -45,6 +56,13 @@ export const Assignment1 = () => {
     function handleGenderChange(event) {
         setGender(event.target.value);
     };
+
+    const options = [
+        { value: "Spanish", label: "Spanish" },
+        { value: "French", label: "French" },
+        { value: "English", label: "English" },
+        { value: "Hindi", label: "Hindi" }
+      ];
 
     return <div>
         <div> Name: <input value={name} onChange={e => setName(e.target.value)} /></div>
@@ -69,7 +87,7 @@ export const Assignment1 = () => {
         <div> isMarried : <input type="checkbox" checked={isMarried} onChange={e => setIsMarried(e.target.checked)} /></div>
         <div> hasChildren : <input type="checkbox" checked={hasChildren} onChange={e => setHasChildren(e.target.checked)} /></div>
         <div> hasSiblings : <input type="checkbox" checked={hasSiblings} onChange={e => setHasSiblings(e.target.checked)} /></div>
-
+        <div> Languages : <Select isMulti options={options} value={selectedOptions} onChange={e => setSelectedOptions(e)}/></div>
         <button onClick={submitFinalForm}>Submit!</button>
     </div>;
 }
