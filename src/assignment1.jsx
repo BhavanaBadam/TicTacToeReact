@@ -22,6 +22,7 @@ import "react-datepicker/dist/react-datepicker.css";
  */
 
 export const Assignment1 = () => {
+    // TODO: Use correct starting types, not empty string "". Also checkout what typescript is. That's what most companies use.
     const [name, setName] = useState("");
     const [age, setAge] = useState("");
     const [gender, setGender] = useState("");
@@ -34,6 +35,7 @@ export const Assignment1 = () => {
     const [fontSize, setFontsize] = useState(16);
 
     const submitFinalForm = () => {
+	{ /* TODO: Error shouldn't show alert. It should make the input box red and disable submit button till the input is changed/fixed */ }
         if (isNaN(age)) {
             alert("Age is Invalid");
             return;
@@ -105,6 +107,7 @@ export const Assignment1 = () => {
         <div> hasChildren : <input type="checkbox" checked={hasChildren} onChange={e => setHasChildren(e.target.checked)} /></div>
         <div> hasSiblings : <input type="checkbox" checked={hasSiblings} onChange={e => setHasSiblings(e.target.checked)} /></div>
         <div> Languages : <Select isMulti options={options} value={selectedOptions} onChange={e => setSelectedOptions(e)}/></div>
+	{/* TODO: fix timezone bug. The date I selected should show up when I submit the form. Not some UTC converted thing */}
         <div> Date_of_Birth : <DatePicker selected={dob} onChange={handleDobChange} peekNextMonth showMonthDropdown showYearDropdown
                                 dropdownMode="select" placeholderText="Select date of birth"/>
         </div>
