@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 
 import { Assignment1 } from "./assignment1";
+import Assignment2 from "./assignment2";
 
 
 function calculateWinner(squares) {
@@ -123,9 +124,11 @@ const MainPage = () => {
         <div style={{ display: 'flex' }}>
             <button onClick={() => setPageName("game")}>Game</button>
             <button onClick={() => setPageName("assignment1")}>Assignment 1</button>
+	    <button onClick={() => setPageName("assignment2")}>Assignment 2</button>
         </div>
         {pageName === "game" && <Game />}
         {pageName === "assignment1" && <Assignment1 />}
+        {pageName === "assignment2" && <Assignment2 />}
     </div>
 };
 
