@@ -6,7 +6,7 @@ const Home = () => {
                What do you want to do today?
 	       <ul>
 		   <li><Link to="posts">View posts</Link></li>
-		   <li><Link>New post</Link></li>
+		   <li><Link to="post/new">New post</Link></li>
 		   </ul>
     </div>;
 }

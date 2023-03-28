@@ -23,9 +23,13 @@ const Posts = () => {
     const {posts, isLoading, isError} = usePosts();
     if (isLoading) return <div>Loading...</div>;
     if (isError) return <div>Something went wrong</div>;
-    return <ul>
-	       {posts.map(postName => <li key={postName}><Link to={`/post/${postName}`}>{postName}</Link></li>)}
-	       </ul>
+    return <div>
+		<ul>
+	    	{posts.map(postName => <li key={postName}><Link to={`/post/${postName}`}>{postName}</Link></li>)}
+	    </ul>
+		<button ><Link to="/">Back To Home</Link></button>
+	</div>
+		   
 }
 
 export default Posts;
