@@ -27,3 +27,5 @@ yarn-debug.log*
 yarn-error.log*
 
 /src/assignment2/posts/
+/src/assignment2/comments/
+
