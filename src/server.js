@@ -53,7 +53,7 @@ const storage = multer.diskStorage({
   const upload = multer({ storage: storage });
   
   app.post("/post/new", upload.single("image"), (req, res) => {
-    fs.writeFile(`${__dirname}/assignment2/comments/${req.body.postName}.txt`, '', function (err) { 
+    fs.open(`${__dirname}/assignment2/comments/${req.body.postName}.txt`, 'wx', function (err) { 
       if (err) throw err;
       console.log(`File ${req.body.postName}.txt created!`);
     });
@@ -64,9 +64,8 @@ const storage = multer.diskStorage({
   const commentUpload = multer();
   app.post("/post/:postName/comments", commentUpload.none(), (req, res) => {
     const {postName} = req.params;
-    console.log(req.body);
     const comments = req.body.new_comment;
-    fs.appendFile(`${__dirname}/assignment2/comments/${postName}.txt`, comments, (err) => {
+    fs.appendFile(`${__dirname}/assignment2/comments/${postName}.txt`, '\n' + comments, (err) => {
       if (err) throw err;
       console.log('Data appended to file!');
     });
