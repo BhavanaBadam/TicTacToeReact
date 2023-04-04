@@ -34,7 +34,7 @@ const NewPost = () => {
         const json = await resp.json();
         const posts1 = json.posts;
 
-        posts1.map(element => {
+        posts1.forEach(element => {
           if (element === postName) {
             setMsg("Duplicate File Name");
             console.log("i'm Here");
@@ -55,7 +55,7 @@ const NewPost = () => {
     <p><button ><Link to="/">Back To Home</Link></button></p>
     <form onSubmit={handleSubmit}>
 	    <div> PostName: <input value={postName} onChange={e => setPostName(e.target.value)} /></div>
-        <div> UploadPost: <input type="file" name="file" onChange={handleFileChange} /></div>
+        <div> UploadPost: <input type="file" name="file" accept="image/png, image/jpeg" onChange={handleFileChange} /></div>
         <button type="submit">Submit</button> 
         <h3>{msg}</h3>
     </form>

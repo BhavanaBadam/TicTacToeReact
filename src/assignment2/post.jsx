@@ -58,16 +58,18 @@ const Post = () => {
 			const bufferArray = Buffer.from(json.postComments.data);
 			const lines = bufferArray.toString('utf8').split('\n');
 			console.log(lines);
-			setExistingComment(lines);
+			const oldComments = [];
+			lines.forEach(line => {
+				if (line != '') {
+					oldComments.push(line);
+				}
+			})
+			setExistingComment(oldComments);
 		}
 		comments(postName);
 	}, [handleChange]);
 	//console.log("imageUrl: " + post);
 	//console.log("existingComments: " + existingComment);
-
-	function isNotEmptyComment(comment) {
-		return comment === '' ? false : true;
-	}
 
     return <>
 	       <Link to="/posts">Back</Link>
@@ -78,7 +80,7 @@ const Post = () => {
 	       <img src={post} />
 		   <h3>Comments : </h3>
 		   <ul>
-	    		{existingComment.map(comment => isNotEmptyComment(comment) && <li>{comment}</li>)}
+	    		{existingComment.map(comment => <li>{comment}</li>)}
 	       </ul>
 		   <p>
 			<form onSubmit={e => setHandleChange(handleSubmit(e,newComment,postName))}>
