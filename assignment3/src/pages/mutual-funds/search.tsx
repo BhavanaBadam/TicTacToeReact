@@ -1,13 +1,23 @@
-import { useState } from 'react';
-import axios from 'axios';
+import { useState } from "react";
+import axios from "axios";
 import { Link as RouterLink } from "react-router-dom";
-import { Box, CircularProgress, TextField, Typography, Grid, Button, Link, List, ListItem } from '@mui/material';
+import {
+  Box,
+  CircularProgress,
+  TextField,
+  Typography,
+  Grid,
+  Button,
+  Link,
+  List,
+  ListItem,
+} from "@mui/material";
 
-import { sleep } from '../../utils';
+import { sleep } from "../../utils";
 
 type SearchResult = {
-  code: string,
-  name: string,
+  code: string;
+  name: string;
 };
 
 export const Search = () => {
@@ -17,14 +27,13 @@ export const Search = () => {
   const searchResults = async (searchWord: string) => {
     setIsSearching(true);
     try {
-
       // API is too fast sometimes. sleep to show loading state
       await sleep(500);
 
       const resp = await axios.get("https://api.mfapi.in/mf/search", {
         params: {
-          q: "nippon"
-        }
+          q: "nippon",
+        },
       });
 
       // TODO: parse this from the `resp`
@@ -49,7 +58,7 @@ export const Search = () => {
     } finally {
       setIsSearching(false);
     }
-  }
+  };
 
   return (
     <Box width="100%">
@@ -59,28 +68,43 @@ export const Search = () => {
         </Grid>
 
         <Grid item xs={6}>
-          <Button size="large" fullWidth variant="contained" onClick={() => searchResults("TODO: get this from text field")}>Search</Button>
+          <Button
+            size="large"
+            fullWidth
+            variant="contained"
+            onClick={() => searchResults("TODO: get this from text field")}
+          >
+            Search
+          </Button>
         </Grid>
 
         <Grid item xs={6}>
-          <Button size="large" fullWidth variant="contained">I'm feeling lucky</Button>
+          <Button size="large" fullWidth variant="contained">
+            I'm feeling lucky
+          </Button>
         </Grid>
       </Grid>
 
       <Box mt={4} textAlign="center">
-        {isSearching ? <CircularProgress size="10vw" /> : (
-          results.length === 0 ? <Typography>No results!</Typography> : (
-            <Box textAlign="end">
-              <Typography>Found {results.length} results</Typography>
-              <List>
-                {results.map(res => <ListItem key={res.code}>
-                  <Link component={RouterLink} to={res.code} >{res.name}</Link>
-                </ListItem>)}
-              </List>
-            </Box>
-          )
+        {isSearching ? (
+          <CircularProgress size="10vw" />
+        ) : results.length === 0 ? (
+          <Typography>No results!</Typography>
+        ) : (
+          <Box textAlign="end">
+            <Typography>Found {results.length} results</Typography>
+            <List>
+              {results.map((res) => (
+                <ListItem key={res.code}>
+                  <Link component={RouterLink} to={res.code}>
+                    {res.name}
+                  </Link>
+                </ListItem>
+              ))}
+            </List>
+          </Box>
         )}
       </Box>
     </Box>
   );
-}
+};

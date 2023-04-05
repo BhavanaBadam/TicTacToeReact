@@ -1,4 +1,4 @@
-import { createTheme } from '@mui/material';
+import { createTheme } from "@mui/material";
 
 export enum AppTheme {
   DARK = "dark",
@@ -8,15 +8,15 @@ export enum AppTheme {
 export const lightTheme = createTheme({
   palette: {
     background: {
-      default: 'white'
-    }
-  }
+      default: "white",
+    },
+  },
 });
 
 export const darkTheme = createTheme({
   palette: {
     background: {
-      default: 'grey'
-    }
-  }
+      default: "grey",
+    },
+  },
 });

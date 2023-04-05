@@ -1,4 +1,4 @@
-import { Container, Stack, Box, Typography } from '@mui/material';
+import { Container, Stack, Box, Typography } from "@mui/material";
 
 // implement search functionality
 // add icon to MF text search
@@ -9,11 +9,13 @@ import { Container, Stack, Box, Typography } from '@mui/material';
 // MF info: use Data Grid component https://mui.com/x/react-data-grid/ instead of simple table
 
 const Assignment3 = () => {
-  return <Container>
-    <Stack textAlign="center">
-      <Typography variant="h2">Assignment 3</Typography>
-    </Stack>
-  </Container>;
-}
+  return (
+    <Container>
+      <Stack textAlign="center">
+        <Typography variant="h2">Assignment 3</Typography>
+      </Stack>
+    </Container>
+  );
+};
 
 export default Assignment3;
