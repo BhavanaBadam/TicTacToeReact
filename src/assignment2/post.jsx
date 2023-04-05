@@ -1,5 +1,6 @@
 import {useState, useEffect} from "react";
 import { useParams, Link } from 'react-router-dom';
+const Buffer = require('buffer').Buffer;
 
 const usePost = (postName) => {
     const [post, setPost] = useState(null);
@@ -11,9 +12,9 @@ const usePost = (postName) => {
 	    try {
 		const resp = await fetch(`/post/${postName}`);
 		const blob = await resp.blob();
-		console.log(blob);
+		//console.log(blob);
 		const imgUrl = URL.createObjectURL(blob);
-		console.log(imgUrl);
+		//console.log(imgUrl);
 		setPost(imgUrl);
 	    } catch (err) {
 		setIsError(true);
@@ -26,14 +27,66 @@ const usePost = (postName) => {
 
 const Post = () => {
     const {postName} = useParams();
-    const {post, isLoading, isError} = usePost(postName);
+	const {post, isLoading, isError} = usePost(postName);
+	//const existingComment = useComments(postName);
+	const [newComment, setNewComment] = useState("");
+	const [existingComment, setExistingComment] = useState([]);
+
+	const comments = async(postName) => {
+		const resp = await fetch(`/post/${postName}/comments`);
+		const json = await resp.json();
+		const bufferArray = Buffer.from(json.postComments.data);
+		const lines = bufferArray.toString('utf8').split('\n');
+		console.log(lines);
+		const oldComments = [];
+		lines.forEach(line => {
+			if (line !== '') {
+				oldComments.push(line);
+			}
+		})
+		setExistingComment(oldComments);
+	}
+
+
+	const handleSubmit = async(event) => {
+		event.preventDefault();
+		const formData = new FormData();
+		formData.append("new_comment", newComment);
+		//await sleep(1000);
+		const response = await fetch(`/post/${postName}/comments`, {
+		  method: "POST",
+		  body: formData
+		});
+		if (!response.ok) {
+			throw new Error(`HTTP error! status: ${response.status}`);
+		} 
+		console.log("successfull");
+		comments(postName); 
+	};
+
+	useEffect(() => {
+		comments(postName); 
+	}, []);
+	//console.log("imageUrl: " + post);
+	//console.log("existingComments: " + existingComment);
+
     return <>
 	       <Link to="/posts">Back</Link>
 	       {!!isLoading && <div>Loading...</div>}
 	       {!!isError && <div>Something went wrong</div>}
 	       {!isLoading && !isError && <ul>
 	       <h3>{postName}</h3>
-	       <img src={post} />
+	       <img alt= '' src={post} />
+		   <h3>Comments : </h3>
+		   <ul>
+	    		{existingComment.map(comment => <li>{comment}</li>)}
+	       </ul>
+		   <p>
+			<form onSubmit={e => handleSubmit(e,newComment,postName)}>
+	    		<input value={newComment} placeholder="Comment here..." onChange={e => setNewComment(e.target.value)} />
+        		<button type="submit">Submit</button> 
+    		</form>
+			</p>
 	       </ul>}
 	   </>;
 }

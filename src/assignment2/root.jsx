@@ -6,6 +6,7 @@ import {
 import Home from "./home";
 import Posts from "./posts";
 import Post from "./post";
+import NewPost from "./newPost";
 
 const router = createBrowserRouter([
     {
@@ -19,6 +20,10 @@ const router = createBrowserRouter([
     {
         path: "/post/:postName",
         element: <Post />,
+    },
+    {
+        path: "/post/new",
+        element: <NewPost />
     }
 ]);
 
