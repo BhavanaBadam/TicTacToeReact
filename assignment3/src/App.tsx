@@ -1,23 +1,23 @@
-import {useState} from 'react';
+import { useState } from 'react';
 import {
   createBrowserRouter,
   RouterProvider,
   Outlet,
 } from "react-router-dom";
-import {Box, ThemeProvider} from '@mui/material';
+import { Box, ThemeProvider } from '@mui/material';
 
 import Home from "./pages/home";
 import Assignment3 from "./pages/assignment3";
 import Assignment4 from "./pages/assignment4";
-import MutualFunds from "./pages/mutual-funds";
+import MutualFunds, { Search as MFSearch, Info as MFInfo } from "./pages/mutual-funds";
 import Sidebar from "./components/sidebar";
-import {AppTheme, lightTheme, darkTheme} from "./constants";
+import { AppTheme, lightTheme, darkTheme } from "./constants";
 
 
 const Layout = () => {
   const [currentTheme, setTheme] = useState<AppTheme>(AppTheme.LIGHT);
   return <ThemeProvider theme={currentTheme === AppTheme.LIGHT ? lightTheme : darkTheme}>
-    <Box sx={{display: 'flex'}}>
+    <Box sx={{ display: 'flex' }}>
       <Box>
         <Sidebar currentTheme={currentTheme} setTheme={setTheme} />
       </Box>
@@ -40,6 +40,16 @@ const router = createBrowserRouter([
       {
         path: "mutual-funds",
         element: <MutualFunds />,
+        children: [
+          {
+            index: true,
+            element: <MFSearch />,
+          },
+          {
+            path: ":code",
+            element: <MFInfo />,
+          }
+        ]
       },
       {
         path: "assignment-3",
@@ -56,7 +66,7 @@ const router = createBrowserRouter([
 function App() {
 
   return (
-      <RouterProvider router={router} />
+    <RouterProvider router={router} />
   );
 }
 
