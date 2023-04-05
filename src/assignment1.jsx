@@ -22,6 +22,7 @@ import './ass1.css';
  */
 
 export const Assignment1 = () => {
+    // TODO: Use correct starting types, not empty string "". Also checkout what typescript is. That's what most companies use.
     const [name, setName] = useState("");
     const [age, setAge] = useState("");
     const [disabled, setDisabled] = useState(false);
