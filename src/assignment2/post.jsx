@@ -40,7 +40,7 @@ const Post = () => {
 		console.log(lines);
 		const oldComments = [];
 		lines.forEach(line => {
-			if (line != '') {
+			if (line !== '') {
 				oldComments.push(line);
 			}
 		})
@@ -76,7 +76,7 @@ const Post = () => {
 	       {!!isError && <div>Something went wrong</div>}
 	       {!isLoading && !isError && <ul>
 	       <h3>{postName}</h3>
-	       <img src={post} />
+	       <img alt= '' src={post} />
 		   <h3>Comments : </h3>
 		   <ul>
 	    		{existingComment.map(comment => <li>{comment}</li>)}
