@@ -105,7 +105,59 @@ const Assignment3 = () => {
         </List>
 
         <Typography variant="h5">3) SpaceX app</Typography>
-        <Typography>Coming soon...</Typography>
+        <Typography>
+          Now that you've explored the codebase making changes, it's time to write some new code
+          from scratch. You will be building an app around the{" "}
+          <a target="_blank" href="https://github.com/r-spacex/SpaceX-API">
+            SpaceX API
+          </a>{" "}
+          which should show up in the sidebar similar to the mutual funds app.{" "}
+        </Typography>
+        <Typography>
+          There's no specific requirements to complete this checkpoint. You decide the exact purpose
+          and scope of the app yourself, but make sure the following points are covered:
+        </Typography>
+        <List
+          sx={{
+            listStyleType: "disc",
+            "& .MuiListItem-root": {
+              marginLeft: 2,
+              display: "list-item",
+            },
+          }}
+        >
+          <ListItem>Has at least 2 list and 2 detail views.</ListItem>
+          <ListItem>
+            Uses{" "}
+            <a target="_blank" href="https://mui.com/material-ui/react-modal/">
+              MUI Modal
+            </a>{" "}
+            to show one of the detail views.
+          </ListItem>
+          <ListItem>
+            Has option to sort by something in one of the list views. The sort should be based on
+            the API, not a <code style={{ color: "grey" }}>.sort()</code> in code.{" "}
+          </ListItem>
+          <ListItem>
+            Uses API pagination in one of the list views with next & preview buttons for navigation
+          </ListItem>
+        </List>
+        <Typography>
+          Look at the{" "}
+          <a target="_blank" href="https://docs.spacexdata.com/">
+            endpoints
+          </a>{" "}
+          the API offers and see{" "}
+          <a
+            target="_blank"
+            href="https://github.com/r-spacex/SpaceX-API/blob/master/docs/apps.md#list-of-known-apps--ui-clients"
+          >
+            existing sites
+          </a>{" "}
+          built using the API for inspiration. Don't worry too much about the looks and styling for
+          now, we'll do that in the next assignment. Don't forget to follow the existing directory
+          and code structure while building the app!
+        </Typography>
       </Stack>
     </Container>
   );
