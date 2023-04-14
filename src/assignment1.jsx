@@ -4,7 +4,7 @@ import DatePicker from "react-datepicker";
 import InputRange from "react-input-range";
 import "react-input-range/lib/css/index.css";
 import "react-datepicker/dist/react-datepicker.css";
-
+import './ass1.css';
 
 /*
   Assignment 1: basic form elements
@@ -25,21 +25,17 @@ export const Assignment1 = () => {
     // TODO: Use correct starting types, not empty string "". Also checkout what typescript is. That's what most companies use.
     const [name, setName] = useState("");
     const [age, setAge] = useState("");
-    const [gender, setGender] = useState("");
-    const [nationality, setNationality] = useState("");
-    const [isMarried, setIsMarried] = useState("");
-    const [hasChildren, setHasChildren] = useState("");
-    const [hasSiblings, setHasSiblings] = useState("");
+    const [disabled, setDisabled] = useState(false);
+    const [gender, setGender] = useState(null);
+    const [nationality, setNationality] = useState(null);
+    const [isMarried, setIsMarried] = useState(false);
+    const [hasChildren, setHasChildren] = useState(false);
+    const [hasSiblings, setHasSiblings] = useState(false);
     const [selectedOptions, setSelectedOptions] = useState([]);
-    const [dob, setDob] = useState("");
+    const [dob, setDob] = useState(null);
     const [fontSize, setFontsize] = useState(16);
 
     const submitFinalForm = () => {
-	{ /* TODO: Error shouldn't show alert. It should make the input box red and disable submit button till the input is changed/fixed */ }
-        if (isNaN(age)) {
-            alert("Age is Invalid");
-            return;
-        }
         function languagesKnown() {
             var languages = "";
             selectedOptions.forEach(l =>
@@ -51,14 +47,26 @@ export const Assignment1 = () => {
             age,
             gender,
             nationality,
-            "isMarried" : isMarried === true ? true : false,
-            "hasChildren" : hasChildren === true ? true : false,
-            "hasSiblings" : hasSiblings === true ? true : false,
+            isMarried,
+            hasChildren,
+            hasSiblings,
             "languagesKnown" : languagesKnown(),
-            Date_of_Birth : dob,
+            "Date_of_Birth" : dob.getDate() + dob.toLocaleString('default', { month: 'long' }) + dob.getFullYear() ,
         };
         console.log("form submit", formValue);
         alert(JSON.stringify(formValue));
+    };
+
+    function handleAgeChange(event) {
+        const inputAge = event.target.value;
+        if (isNaN(inputAge)) {
+            setDisabled(true);
+            setAge(inputAge);
+        } else {
+            setDisabled(false);
+            setAge(inputAge);
+        }
+        
     };
 
     function handleGenderChange(event) {
@@ -84,8 +92,8 @@ export const Assignment1 = () => {
     return <div>
     <form style={formStyle}>
     
-        <div> Name: <input value={name} onChange={e => setName(e.target.value)} /></div>
-        <div> Age:  <input value={age} onChange = {e => setAge(e.target.value)} /></div>
+        <div> Name: <input value={name} placeholder="Enter your Name" onChange={e => setName(e.target.value)} /></div>
+        <div> Age:  <input value={age} placeholder="Enter your Age" className={disabled ? 'error' : ''} onChange = {handleAgeChange} /> </div>
         <div>
             Gender : <br/>
           <input type="radio" name="gender" value="male"  onChange={e => handleGenderChange(e)}/>
@@ -107,13 +115,12 @@ export const Assignment1 = () => {
         <div> hasChildren : <input type="checkbox" checked={hasChildren} onChange={e => setHasChildren(e.target.checked)} /></div>
         <div> hasSiblings : <input type="checkbox" checked={hasSiblings} onChange={e => setHasSiblings(e.target.checked)} /></div>
         <div> Languages : <Select isMulti options={options} value={selectedOptions} onChange={e => setSelectedOptions(e)}/></div>
-	{/* TODO: fix timezone bug. The date I selected should show up when I submit the form. Not some UTC converted thing */}
         <div> Date_of_Birth : <DatePicker selected={dob} onChange={handleDobChange} peekNextMonth showMonthDropdown showYearDropdown
                                 dropdownMode="select" placeholderText="Select date of birth"/>
         </div>
         <div>  Font Size : <InputRange minValue={10} maxValue={40} value={fontSize} onChange={handleFontSizeChange}/> </div>
     </form>    
 
-        <button onClick={submitFinalForm}>Submit!</button>
+        <button disabled={disabled} onClick={submitFinalForm}>Submit!</button>
     </div>;
 }
