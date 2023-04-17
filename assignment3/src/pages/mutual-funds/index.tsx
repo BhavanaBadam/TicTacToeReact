@@ -19,6 +19,6 @@ const MutualFunds = () => {
   );
 };
 
-export { Search } from "./search";
+export { Searchfunc } from "./search";
 export { Info } from "./info";
 export default MutualFunds;

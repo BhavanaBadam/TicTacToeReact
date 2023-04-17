@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useLocation } from "react-router-dom";
 import {
   Box,
   CircularProgress,
@@ -11,8 +11,10 @@ import {
   Link,
   List,
   ListItem,
+  InputAdornment,
+  IconButton,
 } from "@mui/material";
-
+import { Search } from '@mui/icons-material';
 import { sleep } from "../../utils";
 
 type SearchResult = {
@@ -20,9 +22,33 @@ type SearchResult = {
   name: string;
 };
 
-export const Search = () => {
+interface SearchResponse {
+  schemeCode: string;
+  schemeName: string;
+}
+
+export const Searchfunc = () => {
   const [results, setResults] = useState<SearchResult[]>([]);
   const [isSearching, setIsSearching] = useState<boolean>(false);
+  const [emptyResult, setEmptyResult] = useState("No Results!");
+  const [searchWord, setSearchWord] = useState("");
+
+  const location = useLocation();
+
+  useEffect(() => {
+    setEmptyResult("Search for an Item!");
+  }, [])
+
+  const openFirstResult = async (searchWord: string) => {
+    console.log(searchWord);
+    let resultList = await getSearchResults(searchWord);
+    let firstResult = resultList?.at(0)?.code;
+    console.log(location.pathname);
+    if (firstResult) {
+      //console.log(firstResult);
+      window.location.href = location.pathname + "/" + firstResult;
+    }
+  }
 
   const searchResults = async (searchWord: string) => {
     setIsSearching(true);
@@ -30,27 +56,8 @@ export const Search = () => {
       // API is too fast sometimes. sleep to show loading state
       await sleep(500);
 
-      const resp = await axios.get("https://api.mfapi.in/mf/search", {
-        params: {
-          q: "nippon",
-        },
-      });
-
-      // TODO: parse this from the `resp`
-      const res = [
-        {
-          code: "100522",
-          name: "Franklin India Technology Fund-Growth",
-        },
-        {
-          code: "101160",
-          name: "SBI MAGNUM DEBT FUND SERIES - 60 DAYS - 2 - GROWTH",
-        },
-        {
-          code: "119778",
-          name: "Kotak Global Emerging Market Fund - Payout of Income Distribution cum capital withdrawal option - Direct",
-        },
-      ];
+      const res = await getSearchResults(searchWord);
+      //console.log(res);
       setResults(res);
     } catch (e) {
       console.error("Failed to search for mutual funds", e);
@@ -60,11 +67,70 @@ export const Search = () => {
     }
   };
 
+  const getSearchResults = async (searchWord: string) => {
+    console.log("searchWord: " + searchWord);
+    const resp = await axios.get("https://api.mfapi.in/mf/search", {
+      params: {
+        q: searchWord,
+      },
+    });
+
+    const json = await resp.data;
+
+    if (json.length === 0) {
+      setEmptyResult("No Results!")
+    }
+    console.log(json);
+
+    let resultSet: SearchResult[] = [];
+
+    json.forEach((searchLine : SearchResponse) => {
+      let searchResult: SearchResult = {
+        code: searchLine.schemeCode,
+        name: searchLine.schemeName,
+      };
+      resultSet.push(searchResult);
+    });
+    console.log(resultSet);
+
+/*    
+    // TODO: parse this from the `resp`
+    const res = [
+      {
+        code: "100522",
+        name: "Franklin India Technology Fund-Growth",
+      },
+      {
+        code: "101160",
+        name: "SBI MAGNUM DEBT FUND SERIES - 60 DAYS - 2 - GROWTH",
+      },
+      {
+        code: "119778",
+        name: "Kotak Global Emerging Market Fund - Payout of Income Distribution cum capital withdrawal option - Direct",
+      },
+    ];
+  */
+    return resultSet;
+  }
+
   return (
     <Box width="100%">
       <Grid container spacing={1}>
         <Grid item xs={12}>
-          <TextField fullWidth />
+          <TextField 
+            placeholder="Search..."
+            fullWidth 
+            onChange={e => setSearchWord(e.target.value)}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton>
+                  <Search />
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
         </Grid>
 
         <Grid item xs={6}>
@@ -72,14 +138,18 @@ export const Search = () => {
             size="large"
             fullWidth
             variant="contained"
-            onClick={() => searchResults("TODO: get this from text field")}
+            onClick={() => searchResults(searchWord)}
           >
             Search
           </Button>
         </Grid>
 
         <Grid item xs={6}>
-          <Button size="large" fullWidth variant="contained">
+          <Button 
+            size="large" 
+            fullWidth 
+            variant="contained"
+            onClick={() => openFirstResult(searchWord)}>
             I'm feeling lucky
           </Button>
         </Grid>
@@ -89,7 +159,7 @@ export const Search = () => {
         {isSearching ? (
           <CircularProgress size="10vw" />
         ) : results.length === 0 ? (
-          <Typography>No results!</Typography>
+          <Typography>{emptyResult}</Typography>
         ) : (
           <Box textAlign="end">
             <Typography>Found {results.length} results</Typography>

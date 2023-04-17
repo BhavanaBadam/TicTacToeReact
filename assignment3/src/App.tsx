@@ -5,7 +5,7 @@ import { Box, ThemeProvider } from "@mui/material";
 import Home from "./pages/home";
 import Assignment3 from "./pages/assignment3";
 import Assignment4 from "./pages/assignment4";
-import MutualFunds, { Search as MFSearch, Info as MFInfo } from "./pages/mutual-funds";
+import MutualFunds, { Searchfunc as MFSearch, Info as MFInfo } from "./pages/mutual-funds";
 import Sidebar from "./components/sidebar";
 import { AppTheme, lightTheme, darkTheme } from "./constants";
 
