@@ -166,7 +166,9 @@ export const Searchfunc = () => {
             <List>
               {results.map((res) => (
                 <ListItem key={res.code}>
-                  <Link component={RouterLink} to={res.code}>
+                  <Link component={RouterLink} to={res.code} onClick = {() => {
+                        window.location.href = location.pathname + "/" + res.code;
+                  }}>
                     {res.name}
                   </Link>
                 </ListItem>
